@@ -14,19 +14,19 @@ This system provides user authentication, activity tracking, AI recommendations,
 
 ## ⚙️ System Flow
 
-![System Flow](./assets/System-flow Diagram.png)
+![System Flow](./assets/System-flow%20Diagram.png)
 
 ---
 
 ## 🔄 API Flow
 
-![API Flow](./assets/API-Flow Diagram.png)
+![API Flow](./assets/API-Flow%20Diagram.png)
 
 ---
 
 ## 🗄️ Database Design
 
-![Database](./assets/Database design.png)
+![Database](./assets/Database%20design.png)
 
 ---
 
@@ -128,8 +128,6 @@ MicroServices-AI-FitnessApp/
 
 ### ⚠️ Service Startup Order (IMPORTANT)
 
-Services must start in this order:
-
 1. Config Server  
 2. Eureka Server  
 3. Gateway  
@@ -138,13 +136,13 @@ Services must start in this order:
 
 ---
 
-### 🚀 Start All Services
+### 🚀 Start
 
 docker-compose up --build
 
 ---
 
-### 🛑 Stop All Services
+### 🛑 Stop
 
 docker-compose down
 
@@ -156,27 +154,16 @@ docker-compose down
 |--------|------|
 | Frontend | http://localhost:5173 |
 | Gateway | http://localhost:8084 |
-| Eureka Dashboard | http://localhost:8761 |
+| Eureka | http://localhost:8761 |
 | Config Server | http://localhost:8888 |
 
 ---
 
-## ⚠️ Important Notes
+## ⚠️ Notes
 
-- All backend services are not directly accessible  
-- All requests must go through API Gateway (8084)  
-- Configure environment variables properly  
-- Do not hardcode API URLs in frontend  
-
----
-
-## 🚧 Future Improvements
-
-- Rate limiting optimization  
-- Distributed tracing (Zipkin)  
-- Circuit breaker (Resilience4j)  
-- CI/CD pipeline  
-- Kubernetes deployment  
+- All backend services are accessible only via Gateway  
+- Do not call services directly  
+- Environment variables must be configured  
 
 ---
 
