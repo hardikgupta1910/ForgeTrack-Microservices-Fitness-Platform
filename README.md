@@ -58,7 +58,7 @@ This system provides user authentication, activity tracking, AI recommendations,
 ---
 
 ## 📁 Project Structure
-
+```
 MicroServices-AI-FitnessApp/
 │
 ├── fitness-frontend/
@@ -73,7 +73,7 @@ MicroServices-AI-FitnessApp/
 │
 ├── assets/
 └── README.md
-
+```
 ---
 
 ## 🔐 Features
