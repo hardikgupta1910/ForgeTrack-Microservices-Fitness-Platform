@@ -1,6 +1,6 @@
 # 🚀 ForgeTrack – Microservices AI Fitness Platform
 
-A full-stack AI-powered fitness tracking platform built using microservices architecture.
+A scalable AI-powered fitness tracking system built using microservices architecture, designed to simulate real-world distributed systems with API Gateway routing, service discovery, caching, and event-driven communication.
 
 This system provides user authentication, activity tracking, AI recommendations, and analytics — all routed through a centralized API Gateway.
 
@@ -10,11 +10,27 @@ This system provides user authentication, activity tracking, AI recommendations,
 
 ![Architecture](./assets/architecture.png)
 
+This system is built on core distributed architecture principles:
+
+Centralized API Gateway
+Service discovery using Eureka Server
+Externalized configuration via Spring Cloud Config
+Event-driven communication using Apache Kafka
+Caching layer using Redis
+
 ---
 
 ## ⚙️ System Flow
 
 ![System Flow](./assets/System-flow%20Diagram.png)
+
+Request lifecycle:
+
+Frontend sends request to Gateway
+Gateway validates JWT token
+Request routed to target microservice
+Service processes data (DB / Kafka / Redis)
+Response returned via Gateway
 
 ---
 
@@ -22,11 +38,21 @@ This system provides user authentication, activity tracking, AI recommendations,
 
 ![API Flow](./assets/API-Flow%20Diagram.png)
 
+All requests go through Gateway
+No direct service exposure
+Clean routing and security handling
+
 ---
 
 ## 🗄️ Database Design
 
 ![Database](./assets/Database%20design.png)
+
+Polyglot persistence:
+
+PostgreSQL → user & auth data
+MongoDB → activity & AI data
+Redis → caching & sessions
 
 ---
 
@@ -54,6 +80,119 @@ This system provides user authentication, activity tracking, AI recommendations,
 ### DevOps
 - Docker
 - Docker Compose
+
+---
+
+## 🚀 Project Initialization (Step-by-Step Setup)
+
+This is a distributed system, so startup order and configuration matter.
+
+---
+
+### 1️⃣ Clone Repository
+
+```bash
+git clone https://github.com/your-username/ForgeTrack.git
+cd MicroServices-AI-FitnessApp
+```
+
+---
+
+### 2️⃣ Backend Setup (Correct Order)
+
+#### Start Config Server
+
+```bash
+cd fitness-backend/configserver
+mvn spring-boot:run
+```
+
+#### Start Eureka Server
+
+```bash
+cd ../eureka
+mvn spring-boot:run
+```
+
+#### Start API Gateway
+
+```bash
+cd ../gateway
+mvn spring-boot:run
+```
+
+#### Start Microservices
+
+```bash
+cd ../userservice
+mvn spring-boot:run
+
+cd ../authservice
+mvn spring-boot:run
+
+cd ../activityservice
+mvn spring-boot:run
+
+cd ../aiservice
+mvn spring-boot:run
+```
+
+---
+
+### 3️⃣ Database Setup
+
+- PostgreSQL → user/auth  
+- MongoDB → activity/AI  
+- Redis → caching  
+
+#### Using Docker
+
+```bash
+docker-compose up -d postgres mongo redis kafka
+```
+
+---
+
+### 4️⃣ Environment Configuration
+
+Example:
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/fitness
+spring.data.mongodb.uri=mongodb://localhost:27017/fitness
+spring.redis.host=localhost
+jwt.secret=your-secret-key
+```
+
+---
+
+### 5️⃣ Frontend Setup
+
+```bash
+cd fitness-frontend
+npm install
+npm run dev
+```
+
+Frontend runs on:
+http://localhost:5173
+
+---
+
+### 6️⃣ Verification
+
+- Eureka → http://localhost:8761  
+- Gateway → http://localhost:8084  
+
+All services must be registered in Eureka.
+
+---
+
+### 7️⃣ Full Docker Run (Optional)
+
+```bash
+docker-compose up --build
+```
 
 ---
 
