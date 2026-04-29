@@ -249,6 +249,84 @@ MicroServices-AI-FitnessApp/
 
 ---
 
+## ⚡ Event-Driven Architecture (Kafka Integration)
+
+This system uses Apache Kafka for asynchronous communication between services to avoid tight coupling and improve scalability.
+
+---
+
+### 🔁 Event Flow
+
+1. User performs an action (e.g., create activity)  
+2. Activity Service publishes an event to Kafka  
+3. Other services consume the event asynchronously  
+4. System reacts without direct service-to-service calls  
+
+---
+
+### 🧩 Kafka Components Used
+
+- Producer → Activity Service  
+- Consumer → AI Service / Other services  
+- Broker → Kafka  
+- Coordinator → Zookeeper  
+
+---
+
+### 📌 Example Use Case
+
+When a user logs a new activity:
+
+- Activity Service → publishes `activity.created` event  
+- AI Service → consumes event  
+- AI Service → generates recommendation asynchronously  
+
+---
+
+### 🧠 Why Kafka is Used
+
+- Removes tight coupling between services  
+- Enables async processing  
+- Improves scalability under load  
+- Prevents blocking API calls  
+
+---
+
+### ⚠️ Important
+
+Kafka is not used for basic CRUD.
+
+It is only used for:
+- Event-driven workflows  
+- Background processing  
+- Cross-service communication  
+
+If Kafka is removed:
+- Core APIs will still work  
+- But async features (AI recommendations, event processing) will break  
+
+---
+
+### 🔍 Topics (Example)
+
+- activity.created  
+- user.registered  
+- ai.requested  
+
+---
+
+### 🧪 What This Proves
+
+This project is not just REST-based microservices.
+
+It demonstrates:
+- Event-driven architecture  
+- Decoupled service communication  
+- Real-world scalable backend design
+
+---
+
+
 ## 📸 Frontend Screenshots
 
 ### Dashboard
