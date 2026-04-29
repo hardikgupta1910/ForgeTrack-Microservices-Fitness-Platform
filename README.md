@@ -62,16 +62,37 @@ This system provides user authentication, activity tracking, AI recommendations,
 MicroServices-AI-FitnessApp/
 │
 ├── fitness-frontend/
+│ ├── src/
+│ ├── public/
+│ ├── package.json
+│ └── vite.config.js
+│
 ├── fitness-backend/
-│   ├── gateway/
-│   ├── userservice/
-│   ├── activityservice/
-│   ├── aiservice/
-│   ├── authservice/
-│   ├── eureka/
-│   ├── configserver/
+│ ├── gateway/
+│ ├── userservice/
+│ ├── activityservice/
+│ ├── aiservice/
+│ ├── authservice/
+│ ├── eureka/
+│ ├── configserver/
+│ └── docker-compose.yml
 │
 ├── assets/
+│ ├── architecture.png
+│ ├── System-flow Diagram.png
+│ ├── API-Flow Diagram.png
+│ ├── Database design.png
+│ ├── Dashboard.png
+│ ├── Activities.png
+│ ├── AI-Chat.png
+│ ├── AI-Recommendations.png
+│ ├── Login.png
+│ ├── Register.png
+│ ├── postman-AI-chatbot.png
+│ ├── postman-getAllUsers.png
+│ └── postman-login.png
+│
+├── .gitignore
 └── README.md
 ```
 ---
