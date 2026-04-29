@@ -92,7 +92,7 @@ This is a distributed system, so startup order and configuration matter.
 ### 1️⃣ Clone Repository
 
 ```bash
-git clone https://github.com/your-username/ForgeTrack.git
+git clone https://github.com/hardikgupta1910/ForgeTrack-Microservices-Fitness-Platform
 cd MicroServices-AI-FitnessApp
 ```
 
