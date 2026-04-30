@@ -405,3 +405,4 @@ While not production-hardened, the system reflects practical design patterns use
 ## 👨‍💻 Author
 
 Hardik Gupta
+Email: hardikgupta8109@gmail.com
