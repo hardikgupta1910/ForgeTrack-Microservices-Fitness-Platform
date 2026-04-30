@@ -1,8 +1,15 @@
-
-
 version: '3.8'
 
 services:
+
+  # ---------- FRONTEND ----------
+  frontend:
+    build: ./fitness-frontend
+    container_name: frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - gateway
 
   # ---------------- REDIS ----------------
   redis:
@@ -21,14 +28,14 @@ services:
 
   # ---------------- EUREKA ----------------
   eureka:
-    build: ./eureka
+    build: ./fitness-backend/Eureka
     container_name: eureka
     ports:
       - "8761:8761"
 
   # ---------------- CONFIG SERVER ----------------
   config-server:
-    build: ./configserver
+    build: ./fitness-backend/configServer
     container_name: config-server
     ports:
       - "8888:8888"
@@ -66,7 +73,7 @@ services:
 
   # ---------------- USER SERVICE ----------------
   user-service:
-    build: ./userservice
+    build: ./fitness-backend/UserService
     container_name: user-service
     ports:
       - "8080"
@@ -77,7 +84,7 @@ services:
 
   # ---------------- ACTIVITY SERVICE ----------------
   activity-service:
-    build: ./activityservice
+    build: ./fitness-backend/ActivityService
     container_name: activity-service
     ports:
       - "8082"
@@ -90,7 +97,7 @@ services:
 
   # ---------------- AI SERVICE ----------------
   ai-service:
-    build: ./aiservice
+    build: ./fitness-backend/AIService
     container_name: ai-service
     ports:
       - "8083"
@@ -99,7 +106,6 @@ services:
       - GEMINI_KEY=${GEMINI_KEY}
       - GEMINI_URL=${GEMINI_URL}
       - GORQ_API=${GORQ_API}
-
     depends_on:
       - eureka
       - config-server
@@ -108,7 +114,7 @@ services:
 
   # ---------------- AUTH SERVICE ----------------
   auth-service:
-    build: ./authservice
+    build: ./fitness-backend/AuthService
     container_name: auth-service
     ports:
       - "8085"
@@ -118,7 +124,7 @@ services:
 
   # ---------------- GATEWAY ----------------
   gateway:
-    build: ./gateway
+    build: ./fitness-backend/gateway
     container_name: gateway
     ports:
       - "8084:8084"
@@ -140,8 +146,6 @@ services:
       - "5433:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
-
-
 
 volumes:
   mongo-data:
