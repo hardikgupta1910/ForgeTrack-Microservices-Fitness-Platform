@@ -17,7 +17,7 @@ Core architecture components:
 - Config Server (central configuration)
 - Kafka (event-driven communication)
 - Redis (caching + rate limiting)
-- Polyglot databases (PostgreSQL + MongoDB)
+- Polyglot databases (MySQL + MongoDB)
 
 ---
 
@@ -51,7 +51,7 @@ Core architecture components:
 
 Polyglot persistence strategy:
 
-- PostgreSQL → user & authentication data  
+- MySQL → user & authentication data  
 - MongoDB → activity tracking & AI data  
 - Redis → caching & rate limiting  
 
@@ -188,7 +188,7 @@ These decisions prioritize simplicity while demonstrating core system design con
 - Eureka + Config Server
 
 ### Databases
-- PostgreSQL (User/Auth)
+- MySQL (User/Auth)
 - MongoDB (Activity/AI)
 - Redis (Cache + Rate Limiting)
 
