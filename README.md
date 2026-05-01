@@ -1,8 +1,8 @@
-# 🚀 ForgeTrack – Microservices AI Fitness Platform
+# 🚀 ForgeTrack – AI-Powered Microservices Fitness Platform
 
-A scalable AI-powered fitness tracking system built using microservices architecture, designed to simulate real-world distributed systems with API Gateway routing, service discovery, caching, and event-driven communication.
+ForgeTrack is a fully containerized microservices-based fitness platform that integrates AI-driven recommendations, event-driven communication, and layered security.
 
-This system provides user authentication, activity tracking, AI recommendations, and analytics — all routed through a centralized API Gateway.
+The system is designed to simulate real-world distributed architecture with controlled access, resilience mechanisms, and scalable communication patterns.
 
 ---
 
@@ -10,13 +10,14 @@ This system provides user authentication, activity tracking, AI recommendations,
 
 ![Architecture](./assets/architecture.png)
 
-This system is built on core distributed architecture principles:
+Core architecture components:
 
-Centralized API Gateway
-Service discovery using Eureka Server
-Externalized configuration via Spring Cloud Config
-Event-driven communication using Apache Kafka
-Caching layer using Redis
+- API Gateway (single entry point)
+- Eureka (service discovery)
+- Config Server (central configuration)
+- Kafka (event-driven communication)
+- Redis (caching + rate limiting)
+- Polyglot databases (MySQL + MongoDB)
 
 ---
 
@@ -24,13 +25,12 @@ Caching layer using Redis
 
 ![System Flow](./assets/System-flow%20Diagram.png)
 
-Request lifecycle:
-
-Frontend sends request to Gateway
-Gateway validates JWT token
-Request routed to target microservice
-Service processes data (DB / Kafka / Redis)
-Response returned via Gateway
+1. Frontend sends request → Gateway  
+2. Gateway applies rate limiting + JWT validation  
+3. Request routed to target microservice  
+4. Service validates JWT independently  
+5. Service interacts with DB / Kafka / Redis  
+6. Response returned via Gateway  
 
 ---
 
@@ -38,9 +38,10 @@ Response returned via Gateway
 
 ![API Flow](./assets/API-Flow%20Diagram.png)
 
-All requests go through Gateway
-No direct service exposure
-Clean routing and security handling
+- All requests pass through the API Gateway  
+- Gateway handles authentication, routing, and filtering  
+- Services are not directly exposed  
+- Clean separation of concerns between services  
 
 ---
 
@@ -48,11 +49,129 @@ Clean routing and security handling
 
 ![Database](./assets/Database%20design.png)
 
-Polyglot persistence:
+Polyglot persistence strategy:
 
-PostgreSQL → user & auth data
-MongoDB → activity & AI data
-Redis → caching & sessions
+- MySQL → user & authentication data  
+- MongoDB → activity tracking & AI data  
+- Redis → caching & rate limiting  
+
+---
+
+## 🔐 Security Model
+
+### 🔒 Gateway-Level Protection
+
+- All services are **hidden from public access**  
+- Only Gateway is exposed externally  
+- Pre-auth rate limiting applied  
+
+---
+
+### 🔑 Service-Level Security
+
+- Each microservice **validates JWT independently**  
+- No blind trust on Gateway headers  
+- Role-based access supported  
+
+---
+
+### ⚠️ Current Limitations
+
+- Shared secret-based JWT (no RSA)  
+- No OAuth2 authorization server  
+- No token revocation/blacklist  
+
+---
+
+## ⚡ Rate Limiting (Layered + Redis-Based)
+
+### 🔹 Gateway-Level (Pre-Auth)
+
+- Blocks excessive requests before authentication  
+- Prevents spam and brute-force attacks  
+
+---
+
+### 🔹 Service-Level (Post-Auth)
+
+- Per-user request limiting  
+- Implemented using Redis counters  
+
+---
+
+### 🧠 Implementation Details
+
+- Redis used for distributed counting  
+- Simple counter-based approach  
+- Returns `429 Too Many Requests` on limit breach  
+
+---
+
+### ⚠️ Limitations
+
+- Fixed window logic (not sliding window/token bucket)  
+- No global limit across all services  
+- No adaptive rate control  
+
+---
+
+## 🤖 AI System Design
+
+### 🔄 Multi-Provider Fallback
+
+ ```
+OpenRouter → Groq → Gemini → Static Response
+```
+
+
+### ⚙️ Behavior
+
+1. Primary provider called  
+2. On failure → fallback to next provider  
+3. If all fail → return safe default response  
+
+---
+
+### ✅ Advantages
+
+- Prevents total system failure  
+- Ensures consistent user experience  
+- Reduces dependency on single provider  
+
+---
+
+### ⚠️ Limitations
+
+- Sequential fallback (adds latency)  
+- No retry or timeout optimization  
+- No circuit breaker  
+
+---
+
+## 🧠 AI Response Control (Prompt Conditioning)
+
+- AI responses are constrained using backend prompts  
+- Focused on fitness & health domain  
+- Prevents irrelevant outputs  
+
+---
+
+### ⚠️ Limitations
+
+- No conversation memory  
+- No personalization  
+- Not true contextual AI  
+
+---
+
+## ⚖️ Engineering Trade-offs
+
+- Simpler fallback vs complex resilience system  
+- Prompt conditioning vs full AI memory  
+- Redis counters vs advanced rate limiting algorithms  
+- JWT-based auth vs OAuth2  
+
+These decisions prioritize simplicity while demonstrating core system design concepts.
 
 ---
 
@@ -63,140 +182,51 @@ Redis → caching & sessions
 - Tailwind CSS
 - Redux Toolkit
 
-### Backend (Microservices)
-- Spring Boot
+### Backend
+- Spring Boot Microservices
 - Spring Cloud Gateway
-- Eureka (Service Discovery)
-- Config Server
+- Eureka + Config Server
 
 ### Databases
-- PostgreSQL (User/Auth Data)
-- MongoDB (Activities & AI Data)
-- Redis (Cache & Sessions)
+- MySQL (User/Auth)
+- MongoDB (Activity/AI)
+- Redis (Cache + Rate Limiting)
 
 ### Messaging
-- Kafka (Event Streaming)
+- Kafka (Event-driven architecture)
 
 ### DevOps
-- Docker
-- Docker Compose
+- Docker + Docker Compose
 
 ---
 
-## 🚀 Project Initialization (Step-by-Step Setup)
+# 🐳 Running the System (Docker Only)
 
-This is a distributed system, so startup order and configuration matter.
+## ⚠️ Internal Startup Sequence
+
+1. Config Server  
+2. Eureka Server  
+3. Gateway  
+4. Core Services (User, Auth)  
+5. Activity & AI Services  
+6. Frontend  
 
 ---
 
-### 1️⃣ Clone Repository
+## 🚀 Start Everything
 
 ```bash
-git clone https://github.com/hardikgupta1910/ForgeTrack-Microservices-Fitness-Platform
-cd MicroServices-AI-FitnessApp
+docker compose up --build
 ```
 
+# 🛑 Stop
+```
+docker compose down
+```
 ---
 
-### 2️⃣ Backend Setup (Correct Order)
+# 📁 Project Structure
 
-#### Start Config Server
-
-```bash
-cd fitness-backend/configserver
-mvn spring-boot:run
-```
-
-#### Start Eureka Server
-
-```bash
-cd ../eureka
-mvn spring-boot:run
-```
-
-#### Start API Gateway
-
-```bash
-cd ../gateway
-mvn spring-boot:run
-```
-
-#### Start Microservices
-
-```bash
-cd ../userservice
-mvn spring-boot:run
-
-cd ../authservice
-mvn spring-boot:run
-
-cd ../activityservice
-mvn spring-boot:run
-
-cd ../aiservice
-mvn spring-boot:run
-```
-
----
-
-### 3️⃣ Database Setup
-
-- PostgreSQL → user/auth  
-- MongoDB → activity/AI  
-- Redis → caching  
-
-#### Using Docker
-
-```bash
-docker-compose up -d postgres mongo redis kafka
-```
-
----
-
-### 4️⃣ Environment Configuration
-
-Example:
-
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/fitness
-spring.data.mongodb.uri=mongodb://localhost:27017/fitness
-spring.redis.host=localhost
-jwt.secret=your-secret-key
-```
-
----
-
-### 5️⃣ Frontend Setup
-
-```bash
-cd fitness-frontend
-npm install
-npm run dev
-```
-
-Frontend runs on:
-http://localhost:5173
-
----
-
-### 6️⃣ Verification
-
-- Eureka → http://localhost:8761  
-- Gateway → http://localhost:8084  
-
-All services must be registered in Eureka.
-
----
-
-### 7️⃣ Full Docker Run (Optional)
-
-```bash
-docker-compose up --build
-```
-
----
-
-## 📁 Project Structure
 ```
 MicroServices-AI-FitnessApp/
 │
@@ -234,98 +264,54 @@ MicroServices-AI-FitnessApp/
 ├── .gitignore
 └── README.md
 ```
----
-
-## 🔐 Features
-
-- JWT Authentication  
-- API Gateway Routing  
-- Microservices Communication  
-- Activity Tracking System  
-- AI Chat & Recommendations  
-- Role-Based Access (Admin/User)  
-- Redis Caching  
-- Kafka Event Streaming  
 
 ---
 
-## ⚡ Event-Driven Architecture (Kafka Integration)
-
-This system uses Apache Kafka for asynchronous communication between services to avoid tight coupling and improve scalability.
-
----
-
-### 🔁 Event Flow
-
-1. User performs an action (e.g., create activity)  
-2. Activity Service publishes an event to Kafka  
-3. Other services consume the event asynchronously  
-4. System reacts without direct service-to-service calls  
+| Service       | URL                                            |
+| ------------- | ---------------------------------------------- |
+| Frontend      | [http://localhost:5173](http://localhost:5173) |
+| Gateway       | [http://localhost:8084](http://localhost:8084) |
+| Eureka        | [http://localhost:8761](http://localhost:8761) |
+| Config Server | [http://localhost:8888](http://localhost:8888) |
+| Redis Insight | [http://localhost:5541](http://localhost:5541) |
 
 ---
 
-### 🧩 Kafka Components Used
+## ⚠️ Important Rules
 
-- Producer → Activity Service  
-- Consumer → AI Service / Other services  
-- Broker → Kafka  
-- Coordinator → Zookeeper  
-
----
-
-### 📌 Example Use Case
-
-When a user logs a new activity:
-
-- Activity Service → publishes `activity.created` event  
-- AI Service → consumes event  
-- AI Service → generates recommendation asynchronously  
+- ❌ Do NOT access services directly  
+- ✅ Always use Gateway  
+- ❌ Do NOT expose internal ports  
+- ✅ All traffic flows through Gateway  
 
 ---
 
-### 🧠 Why Kafka is Used
+## ⚡ Event-Driven Architecture (Kafka)
 
-- Removes tight coupling between services  
-- Enables async processing  
-- Improves scalability under load  
-- Prevents blocking API calls  
+Kafka is used for asynchronous communication.
 
----
+### 🔄 Flow
 
-### ⚠️ Important
-
-Kafka is not used for basic CRUD.
-
-It is only used for:
-- Event-driven workflows  
-- Background processing  
-- Cross-service communication  
-
-If Kafka is removed:
-- Core APIs will still work  
-- But async features (AI recommendations, event processing) will break  
+1. Service publishes event  
+2. Kafka broker processes event  
+3. Other services consume asynchronously  
 
 ---
 
-### 🔍 Topics (Example)
+### 📌 Example
 
-- activity.created  
-- user.registered  
-- ai.requested  
-
----
-
-### 🧪 What This Proves
-
-This project is not just REST-based microservices.
-
-It demonstrates:
-- Event-driven architecture  
-- Decoupled service communication  
-- Real-world scalable backend design
+- Activity created → event published  
+- AI service consumes → generates recommendation  
 
 ---
 
+### 🤔 Why Kafka?
+
+- Decouples services  
+- Improves scalability  
+- Enables async workflows  
+
+---
 
 ## 📸 Frontend Screenshots
 
@@ -362,49 +348,62 @@ It demonstrates:
 
 ---
 
-## 🐳 Running with Docker
+## 🚀 Future Improvements
 
-### ⚠️ Service Startup Order (IMPORTANT)
+### 🔐 Security
+- OAuth2 / Authorization Server  
+- JWT using public/private keys  
+- Token revocation  
 
-1. Config Server  
-2. Eureka Server  
-3. Gateway  
-4. User Service  
-5. Other Services (Activity, AI, Auth)
+### ⚙️ Resilience
+- Circuit breaker (Resilience4j)  
+- Retry mechanisms  
+- Dead-letter queues  
 
----
+### 📊 Observability
+- Centralized logging (ELK)  
+- Metrics (Prometheus)  
+- Tracing (Zipkin)  
 
-### 🚀 Start
+### ⚡ Performance
+- AI response caching (Redis)  
+- Query optimization  
+- Better indexing  
 
-docker-compose up --build
-
----
-
-### 🛑 Stop
-
-docker-compose down
-
----
-
-## 🌐 Access Points
-
-| Service | URL |
-|--------|------|
-| Frontend | http://localhost:5173 |
-| Gateway | http://localhost:8084 |
-| Eureka | http://localhost:8761 |
-| Config Server | http://localhost:8888 |
+### 🧠 AI Enhancements
+- Conversation memory  
+- Context-aware responses  
+- Smart provider selection  
+- Cost optimization  
 
 ---
 
-## ⚠️ Notes
+## 🧪 What This Project Demonstrates
 
-- All backend services are accessible only via Gateway  
-- Do not call services directly  
-- Environment variables must be configured  
+- Distributed system design  
+- Layered security architecture  
+- Event-driven microservices  
+- AI integration with fallback handling  
+- Scalable backend design patterns  
+
+---
+
+## ❗ Scope & Reality
+
+This project is designed to demonstrate real-world microservices architecture concepts, including:
+
+- API Gateway routing  
+- Service discovery  
+- Event-driven communication  
+- Layered security  
+- AI integration with fallback handling  
+
+While not production-hardened, the system reflects practical design patterns used in scalable distributed systems and can be extended with enterprise-grade components. 
 
 ---
 
 ## 👨‍💻 Author
 
 Hardik Gupta
+
+Email: hardikgupta8109@gmail.com
