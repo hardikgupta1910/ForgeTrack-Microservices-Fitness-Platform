@@ -1,13 +1,19 @@
 package com.fitness.ActivityService.controller;
 
 
+import com.fitness.ActivityService.Enums.ActivityType;
+import com.fitness.ActivityService.dto.ActivityHistoryResponse;
 import com.fitness.ActivityService.dto.ActivityRequest;
 import com.fitness.ActivityService.dto.ActivityResponse;
 import com.fitness.ActivityService.service.ActivityService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -59,10 +65,40 @@ public class ActivityController {
     }
 
     // ADMIN: GET ALL
+//    @GetMapping("/all")
+//    public List<ActivityResponse> getAll(HttpServletRequest request) {
+//
+//        return activityService.getAllActivities(getRole(request));
+//    }
     @GetMapping("/all")
-    public List<ActivityResponse> getAll(HttpServletRequest request) {
+    public List<ActivityResponse> getAll(
+            HttpServletRequest request,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return activityService.getAllActivities(getRole(request), page, size);
+    }
 
-        return activityService.getAllActivities(getRole(request));
+
+    @GetMapping("/history")
+    public ResponseEntity<ActivityHistoryResponse> getActivityHistory(
+            HttpServletRequest request,
+            @RequestParam(required = false) ActivityType type,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "startTime") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDir
+    ) {
+        String userId = getUserId(request);
+
+        return ResponseEntity.ok(
+                activityService.getActivityHistory(userId, type, fromDate, toDate, page, size, sortBy, sortDir
+                )
+        );
     }
 
 

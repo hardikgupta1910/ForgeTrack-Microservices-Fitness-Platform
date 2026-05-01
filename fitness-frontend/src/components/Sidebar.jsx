@@ -12,6 +12,7 @@ import {
   User,
   Users,
   LogOut,
+  History as HistoryIcon,
 } from 'lucide-react'
 
 const Sidebar = () => {
@@ -22,6 +23,7 @@ const Sidebar = () => {
   const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { to: '/activities', label: 'Activities', icon: ClipboardList, end: true },
+  { to: '/history', label: 'History', icon: HistoryIcon },
   { to: '/activities/new', label: 'Add Activity', icon: PlusCircle },
   { to: '/recommendations', label: 'Recommendations', icon: Sparkles },
   { to: '/ai-chat', label: 'AI Chat', icon: Bot },

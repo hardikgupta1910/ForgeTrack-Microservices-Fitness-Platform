@@ -77,10 +77,16 @@ services:
     container_name: user-service
     ports:
       - "8080"
+    environment:
+       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/fitness_db
+       SPRING_DATASOURCE_USERNAME: fitness_user
+       SPRING_DATASOURCE_PASSWORD: fitness_pass
+       SPRING_JPA_HIBERNATE_DDL_AUTO: update 
     depends_on:
       - eureka
       - config-server
       - redis
+      - mysql
 
   # ---------------- ACTIVITY SERVICE ----------------
   activity-service:
@@ -88,6 +94,8 @@ services:
     container_name: activity-service
     ports:
       - "8082"
+    environment:
+      MONGO_DB_ACTIVITY: AIActivityDB  
     depends_on:
       - eureka
       - config-server
@@ -106,6 +114,7 @@ services:
       - GEMINI_KEY=${GEMINI_KEY}
       - GEMINI_URL=${GEMINI_URL}
       - GORQ_API=${GORQ_API}
+      - MONGO_DB_AI=AiRecommendation
     depends_on:
       - eureka
       - config-server
@@ -135,18 +144,34 @@ services:
       - auth-service
       - eureka
 
-  postgres:
-    image: postgres:15
-    container_name: postgres
+  # postgres:
+  #   image: postgres:15
+  #   container_name: postgres
+  #   environment:
+  #     POSTGRES_DB: ${POSTGRES_DB}
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  #   ports:
+  #     - "5433:5432"
+  #   volumes:
+  #     - postgres-data:/var/lib/postgresql/data
+
+
+  mysql:
+    image: mysql:8
+    container_name: fitness-mysql
+    restart: always
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: fitness_db
+      MYSQL_USER: fitness_user
+      MYSQL_PASSWORD: fitness_pass
     ports:
-      - "5433:5432"
+      - "3307:3306"
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - mysql_data:/var/lib/mysql
 
 volumes:
   mongo-data:
-  postgres-data:
+  # postgres-data:
+  mysql_data:

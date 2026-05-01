@@ -57,7 +57,7 @@ public class RecommendationServiceImpl implements RecommendationService {
             throw new RuntimeException("No recommendation found");
         }
 
-        // 🔒 CHECK OWNER
+        //  CHECK OWNER
         if (!recommendations.get(0).getUserId().equals(tokenUserId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access Denied");
         }

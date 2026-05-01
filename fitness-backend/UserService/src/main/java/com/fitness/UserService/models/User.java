@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 @Data
 public class User {
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
+	@Column(length = 36)
 	private String id;
 	@Column(unique = true, nullable = false)
 	private String email;
@@ -29,5 +29,12 @@ public class User {
 	
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
-	
+
+
+	@PrePersist
+	public void generateId() {
+		if (id == null) {
+			id = java.util.UUID.randomUUID().toString();
+		}
+	}
 }
