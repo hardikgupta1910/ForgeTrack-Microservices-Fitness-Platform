@@ -30,7 +30,7 @@ public class AiJwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        // 🔥 BLOCK DIRECT ACCESS (no gateway)
+        //  BLOCK DIRECT ACCESS (no gateway)
         String internal = req.getHeader("X-Internal-Request");
 
         if (internal == null || !internal.equals("true")) {
@@ -39,7 +39,7 @@ public class AiJwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        // 🔥 JWT VALIDATION
+        //  JWT VALIDATION
         String header = req.getHeader("Authorization");
 
         if (header == null || !header.startsWith("Bearer ")) {

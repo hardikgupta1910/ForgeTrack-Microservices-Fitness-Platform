@@ -1,6 +1,5 @@
 package com.fitness.gateway.Security;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,7 +7,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.web.server.context.ServerSecurityContextRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
@@ -29,60 +27,7 @@ public class JwtAuthFilter implements WebFilter {
 
 
 
-/*    @Override
-    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
 
-        System.out.println("JWT FILTER HIT");
-
-        String path = exchange.getRequest().getPath().value();
-
-        // PUBLIC
-        if (path.startsWith("/api/auth") ||
-                path.startsWith("/api/users/register") ||
-                path.startsWith("/api/users/validate-login")) {
-            return chain.filter(exchange);
-        }
-
-        String authHeader = exchange.getRequest()
-                .getHeaders()
-                .getFirst(HttpHeaders.AUTHORIZATION);
-
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return unauthorized(exchange);
-        }
-
-        String token = authHeader.substring(7);
-
-        if (!jwtUtil.validateToken(token)) {
-            return unauthorized(exchange);
-        }
-
-        String userId = jwtUtil.extractUserId(token);
-        String role = jwtUtil.extractRole(token);
-
-        // 🔥 CREATE AUTH OBJECT
-        UsernamePasswordAuthenticationToken auth =
-                new UsernamePasswordAuthenticationToken(
-                        userId,
-                        null,
-                        List.of(new SimpleGrantedAuthority(role))
-                );
-
-        SecurityContext context = new SecurityContextImpl(auth);
-
-        // 🔥 ADD HEADERS
-        ServerWebExchange mutatedExchange = exchange.mutate()
-                .request(exchange.getRequest().mutate()
-                        .header("X-User-Id", userId)
-                        .header("X-User-Role", role)
-                        .header("X-Internal-Request", "true")
-                        .build())
-                .build();
-
-        // 🔥 THIS LINE IS THE DIFFERENCE
-        return chain.filter(mutatedExchange)
-                .contextWrite(ReactiveSecurityContextHolder.withSecurityContext(Mono.just(context)));
-    }*/
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {

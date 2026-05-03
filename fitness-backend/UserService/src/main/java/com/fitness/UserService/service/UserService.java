@@ -10,22 +10,7 @@ import org.springframework.security.core.Authentication;
 import java.util.List;
 
 public interface UserService {
-//	UserResponse register(RegisterRequest request);
-//
-//	UserResponse validateLogin(LoginRequest request);
-//
-//	//Boolean existsByUserId(String userId);
-//
-//	UserResponse getUserById(String requestedUserId, String tokenUserId, String role);
-//
-//	UserResponse updateUser(String targetUserId, UpdateUserRequest request, String tokenUserId, String role);
-//
-//
-//	void deleteUser(String targetUserId, String tokenUserId, String role);
-//
-//	void updateUserRole(String targetUserId, String roleParam, String tokenUserId, String role);
-//
-//	List<UserResponse> getAllUsers(String role);
+
 
 
 	UserResponse register(RegisterRequest request);

@@ -30,7 +30,7 @@ public class ActivityCacheConfig {
         // to handle LocalDateTime
         mapper.findAndRegisterModules();
 
-        // to  preserve type info (fix LinkedHashMap issue)
+        // to  preserve type info
         mapper.activateDefaultTyping(
                 BasicPolymorphicTypeValidator.builder()
                         .allowIfBaseType(Object.class)

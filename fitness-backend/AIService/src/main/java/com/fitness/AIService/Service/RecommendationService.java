@@ -8,7 +8,6 @@ import java.util.List;
 public interface RecommendationService {
 
 
-    //List<RecommendationResponseDto> getUserRecommendations(String userId,  String tokenUserId,
 
     List<RecommendationResponseDto> getUserRecommendations(
             String userId,
@@ -17,5 +16,4 @@ public interface RecommendationService {
     List<RecommendationResponseDto> getActivityRecommendations(
             String activityId,
             String tokenUserId);
-    //List<RecommendationResponseDto> getActivityRecommendations(String activityId);
 }

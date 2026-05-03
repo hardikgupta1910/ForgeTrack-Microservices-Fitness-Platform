@@ -18,7 +18,6 @@ import lombok.Builder;
 public class RecommendationResponseDto {
     private String activityId;
     private String userId;
-//    private String recommendation;
     private ActivityType activityType ;
 private Map<String, String> analysis;
 

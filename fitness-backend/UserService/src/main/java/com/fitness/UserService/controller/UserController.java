@@ -6,8 +6,6 @@ import com.fitness.UserService.dto.*;
 import com.fitness.UserService.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,19 +18,19 @@ public class UserController {
 
 	private final UserService userService;
 
-	// ================= REGISTER =================
+	// REGISTER
 	@PostMapping("/register")
 	public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest request) {
 		return ResponseEntity.ok(userService.register(request));
 	}
 
-	// ================= LOGIN =================
+	//LOGIN
 	@PostMapping("/validate-login")
 	public ResponseEntity<UserResponse> validateLogin(@RequestBody LoginRequest request) {
 		return ResponseEntity.ok(userService.validateLogin(request));
 	}
 
-	// ================= GET USER =================
+	//GET USER
 	@GetMapping("/{userId}")
 	public ResponseEntity<UserResponse> getUser(
 			@PathVariable String userId,
@@ -45,7 +43,7 @@ public class UserController {
 		);
 	}
 
-	// ================= UPDATE =================
+	// UPDATE
 	@PutMapping("/{id}")
 	public ResponseEntity<UserResponse> updateUser(
 			@PathVariable String id,
@@ -59,7 +57,7 @@ public class UserController {
 		);
 	}
 
-	// ================= DELETE =================
+	//  DELETE
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteUser(
 			@PathVariable String id,
@@ -71,7 +69,7 @@ public class UserController {
 		return ResponseEntity.ok("User deleted");
 	}
 
-	// ================= ROLE =================
+	//  ROLE
 	@PutMapping("/{id}/role")
 	public ResponseEntity<String> updateRole(
 			@PathVariable String id,
@@ -84,7 +82,7 @@ public class UserController {
 		return ResponseEntity.ok("Role updated");
 	}
 
-	// ================= GET ALL =================
+	//  GET ALL
 	@GetMapping("/all")
 	public ResponseEntity<List<UserResponse>> getAllUsers(
 			@RequestHeader("Authorization") String authHeader,

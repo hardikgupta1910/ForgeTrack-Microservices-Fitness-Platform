@@ -11,8 +11,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -64,12 +62,7 @@ public class ActivityController {
         return "Deleted";
     }
 
-    // ADMIN: GET ALL
-//    @GetMapping("/all")
-//    public List<ActivityResponse> getAll(HttpServletRequest request) {
-//
-//        return activityService.getAllActivities(getRole(request));
-//    }
+
     @GetMapping("/all")
     public List<ActivityResponse> getAll(
             HttpServletRequest request,

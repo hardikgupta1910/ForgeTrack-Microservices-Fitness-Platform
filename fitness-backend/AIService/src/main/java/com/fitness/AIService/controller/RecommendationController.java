@@ -23,7 +23,7 @@ public class RecommendationController {
         return (String) request.getAttribute("userId");
     }
 
-    // 🔒 USER CAN ONLY SEE HIS OWN DATA
+    //  USER CAN ONLY SEE HIS OWN DATA
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<RecommendationResponseDto>> getUserRecommendations(
             @PathVariable String userId,
@@ -36,7 +36,7 @@ public class RecommendationController {
         );
     }
 
-    // 🔒 ALSO LOCK THIS ENDPOINT
+    //  ALSO LOCK THIS ENDPOINT
     @GetMapping("/activity/{activityId}")
     public ResponseEntity<List<RecommendationResponseDto>> getActivityRecommendations(
             @PathVariable String activityId,

@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 	private final PasswordEncoder passwordEncoder;
 	private final JwtUtil jwtUtil;
 
-	// ================= COMMON AUTH VALIDATION =================
+	//COMMON AUTH VALIDATION
 	private UserContext validateAndExtract(String authHeader,
 	                                       String headerUserId,
 	                                       String headerRole) {
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 		return new UserContext(tokenUserId, tokenRole);
 	}
 
-	// ================= REGISTER =================
+	// REGISTER
 	@Override
     @CacheEvict(value = "users_all", allEntries = true)
 
@@ -79,21 +79,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	// ================= LOGIN =================
-	// @Override
-	// public UserResponse validateLogin(LoginRequest request) {
-	// 	System.out.println("RAW: " + request.getPassword());
-	// 	System.out.println("DB: " + request.getPassword());
-	// 	System.out.println("MATCH: " + passwordEncoder.matches(request.getPassword(), request.getPassword()));
-	// 	User user = userRepository.findByEmail(request.getEmail())
-	// 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
-
-	// 	if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-	// 		throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-	// 	}
-
-	// 	return map(user);
-	// }
+	// LOGIN
 
 public UserResponse validateLogin(LoginRequest request) {
     User user = userRepository.findByEmail(request.getEmail())
@@ -112,7 +98,7 @@ public UserResponse validateLogin(LoginRequest request) {
 }
 	
 
-	// ================= GET USER =================
+	//  GET USER
 	@Override
 	@Cacheable(value = "users", key = "#p0")
 	public UserResponse getUserById(String requestedId,
@@ -130,7 +116,7 @@ public UserResponse validateLogin(LoginRequest request) {
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
 	}
 
-	// ================= UPDATE =================
+	// UPDATE
 	@Override
     @Caching(evict = {
             @CacheEvict(value = "users", key = "#id"),
@@ -157,7 +143,7 @@ public UserResponse validateLogin(LoginRequest request) {
 		return map(userRepository.save(user));
 	}
 
-	// ================= DELETE =================
+	//  DELETE
 	@Override
     @Caching(evict = {
             @CacheEvict(value = "users", key = "#id"),
@@ -177,7 +163,7 @@ public UserResponse validateLogin(LoginRequest request) {
 		userRepository.deleteById(id);
 	}
 
-	// ================= ROLE =================
+	// ROLE
 	@Override
     @Caching(evict = {@CacheEvict(value = "users", key = "#id"),
             @CacheEvict(value = "users_all", allEntries = true)
@@ -197,7 +183,7 @@ public UserResponse validateLogin(LoginRequest request) {
 		userRepository.save(user);
 	}
 
-	// ================= GET ALL =================
+	//  GET ALL
 	@Override
 	@Cacheable(value = "users_all", key = "'all'")
 
@@ -218,7 +204,7 @@ public UserResponse validateLogin(LoginRequest request) {
 		return list;
 	}
 
-	// ================= HELPERS =================
+	// HELPERS
 
 	private boolean isAdmin(String role) {
 		return "ROLE_ADMIN".equals(role);
